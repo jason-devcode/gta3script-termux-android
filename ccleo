@@ -1,0 +1,82 @@
+#!/bin/bash
+
+function printCompiling
+{
+  echo -e "\e[1;32mCompiling...\e[m"
+}
+
+function checkInput
+{
+  if [ -z "$1" ] || [ -z "$2" ] ; then
+    echo "Error: invalid input!"
+    echo "Command syntax: "
+    echo "ccleo <filename>.sc --<csa|csi>"
+    exit 1
+  fi
+}
+
+function checkCompiler
+{
+  if [ -z $(command -v gta3sc) ];
+  then 
+    echo "Error: gta3sc Compiler not found!"
+    exit 1
+  end
+  fi
+}
+
+
+function getFilename
+{
+  filename=$( echo $1 | grep -oP ".*\." | grep -oP "[a-zA-Z0-9_]+" )
+  echo "$filename"
+}
+
+function getExtension
+{
+  extension=$( echo $1 | grep -oP "cs[ai]" )
+  echo $extension
+}
+
+
+function buildOutput
+{
+  echo "$1.$2"
+}
+
+function backOldOutput
+{
+  if [ -f $1 ];
+  then 
+    mv $1 $1.bak
+  fi
+}
+
+function runCompiler
+{
+  flags="
+  --guesser
+  --config=gtasa
+  -fcleo
+  --cs
+  "
+  filename=$1
+  output=$2
+  gta3sc $1 -o $2 $flags
+}
+
+
+main ()
+{
+  checkInput "$@"
+  checkCompiler
+  printCompiling
+  filename=$(getFilename $1)
+  extension=$(getExtension $2)
+  output=$(buildOutput $filename $extension)
+
+  backOldOutput $output
+  runCompiler $1 $output
+}
+
+main "$@"
