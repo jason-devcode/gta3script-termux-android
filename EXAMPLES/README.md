@@ -1,4 +1,4 @@
 # Example of compiling:
 ```
-ccleo test.sc --csa
+ccleo helloworld.sc --csa
 ```
