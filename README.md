@@ -2,7 +2,7 @@
 
 Give execute privilegies to install.sh:
 ```
-- chmod +x install.sh
+chmod +x install.sh
 ```
 
 2. Run instaler:
